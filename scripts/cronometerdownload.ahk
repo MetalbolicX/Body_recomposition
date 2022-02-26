@@ -53,7 +53,7 @@ WaitForFileInDrive(fileCronometer)
 ; Get the last date to retrieve all rows from which are not in macronutrients table
 dbPath := A_ScriptDir . "\..\data\external\Diet_be.accdb"
 ExistingFile(dbPath)
-queryStr := "SELECT Format(DateAdd(""d"", 1, MAX(Fecha)), ""yyyy-mm-dd"") AS last_date FROM macronutrients"
+queryStr := "SELECT Format(DateAdd(""d"", 1, MAX(Fecha)), ""yyyy-mm-dd"") AS last_date FROM macronutrients;"
 lastDate := GetLastDateFromDB(dbPath, queryStr)
 
 WinClose Google Chrome
@@ -215,7 +215,13 @@ Returns:
             queryInsert := "INSERT INTO macronutrients (" . HeadersFieldsToAccDB() . ") VALUES (" . line . ");"
             cmd.CommandText := queryInsert
             ; Execute the insertion
-            cmd.Execute
+            Try,
+                cmd.Execute
+            Catch, e {
+                MsgBox, 48, Warning, The ODBC connection failed for INSERT INTO statement., 3
+                dbConn.Close()
+                ExitApp
+            }
             ++i
         }
     }
@@ -267,7 +273,7 @@ Returns:
         currentDate := A_Now
         EnvAdd, currentDate, -1, Days
         FormatTime, formatedDate, % currentDate, yyyy/MM/dd
-        insertQuery := "INSERT INTO downloads (start_date) VALUES (#" . formatedDate . "#)"
+        insertQuery := "INSERT INTO downloads (start_date) VALUES (#" . formatedDate . "#);"
 
         oAcc.DoCmd.SetWarnings(false)
         ; Agrego la siguiente fecha de ejecución
