@@ -81,7 +81,13 @@ Returns:
 */
     connectionStr := "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" . dbPath . ";Persist Security Info=False;"
     adoConn := ComObjCreate("ADODB.Connection")
-    adoConn.Open(connectionStr)
+
+    Try,
+        adoConn.Open(connectionStr)
+    Catch, e {
+        MsgBox, 48, ODBC connection was not possible., 3
+        ExitApp
+    }
 
     return adoConn
 }
