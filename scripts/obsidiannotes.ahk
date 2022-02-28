@@ -81,10 +81,11 @@ GetQueryString(textData) {
 */
 
     ; I wanto the extrac the text of the note and the creation date
-    regexArr := ["O)___\n(.*)", "\d{4,4}-\d{2,2}-\d{2,2}\s\d{2,2}:\d{2,2}"] 
+    regexArr := ["O)___\n(.*)", "\d{4,4}-\d{2,2}-\d{2,2}\s\d{2,2}:\d{2,2}", "O)#\s([^`n]+)"]
     RegExMatch(textData, regexArr[1], journalText)
     RegExMatch(textData, regexArr[2], dateData)
+    RegExMatch(textData, regexArr[3], titleText)
 
-    return "INSERT INTO emotional_journal (paragraph, journal_created_at) VALUES ('" . journalText.Value(1) . "', #" . dateData . "#);"
+    return "INSERT INTO emotional_journal (paragraph, title, journal_created_at) VALUES ('" . journalText.Value(1) . "', '" . titleText.Value(1) . "', #" . dateData . "#);"
 
 }
