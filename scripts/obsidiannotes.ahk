@@ -31,7 +31,7 @@ Main(filePath) {
     Try,
         cmd.Execute
     Catch, er {
-        MsgBox, 48, SQL insertiion was not possible., 3
+        MsgBox, 48, SQL insertion was not possible., 3
         dbConn.Close()
         ExitApp
     }
